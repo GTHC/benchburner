@@ -1,5 +1,11 @@
+import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-admin.initializeApp();
+import * as firebase from 'firebase';
+import * as dotenv from 'dotenv';
+
+dotenv.load();
+
+// admin.initializeApp();
 
 const config = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -10,7 +16,14 @@ const config = {
   messagingSenderId: process.env.FIREBASE_MSG_ID
 };
 
+firebase.initializeApp(config);
+
+const firestore = firebase.firestore();
+firestore.settings({timestampsInSnapshots: true});
+
+
 export {
   admin,
-  config
+  config,
+  firebase,
 };
