@@ -9,4 +9,4 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 
 export { default as testFunction } from './testFunction';
 
-export { newUserSignIn } from './user';
+export { newUserSignIn, getUser } from './user';
