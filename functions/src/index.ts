@@ -8,3 +8,5 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 });
 
 export { default as testFunction } from './testFunction';
+
+export { newUserSignIn, user } from './user';
