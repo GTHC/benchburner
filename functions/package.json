@@ -6,7 +6,8 @@
     "shell": "npm run build && firebase experimental:functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "clean:branch": "./bin/clean-branch.sh"
   },
   "main": "lib/src/index.js",
   "dependencies": {
