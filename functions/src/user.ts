@@ -87,6 +87,9 @@ Cloud Functions
    })
  })
 
+ /**
+  * user - API endpoint that takes GET, and PUT requests to the user collection
+  */
  const user = functions.https.onRequest((req, res) => {
    switch (req.method) {
      case 'GET': {
