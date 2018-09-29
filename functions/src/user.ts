@@ -26,6 +26,10 @@ const getUser = (req: functions.Request, res: functions.Response) => {
     })
     .catch(err => {
       console.error(err)
+      return res.status(500).json({
+          message: `Firebase threw error. More details in error element of response.`,
+          error: err,
+      });
     })
   } else {
     return res.status(400).json({
@@ -58,9 +62,11 @@ const putUser = (req: functions.Request, res: functions.Response) => {
     })
   })
   .catch(err => {
-    res.status(500).json({
-      error: err,
-    })
+    console.error(err)
+    return res.status(500).json({
+        message: `Firebase threw error. More details in error element of response.`,
+        error: err,
+    });
   })
   return res;
 }
