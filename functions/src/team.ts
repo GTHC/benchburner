@@ -8,7 +8,7 @@ const db = firebase.firestore().collection('teams')
 /**
  * checkNewTeamData - helper function for postTeam to check if new team data is valid
  */
-const checkNewTeamData = (data) => (data.id && data.name && data.type && data.number);
+const checkNewTeamData = (data) => (data.id && data.name && data.type && data.number && data.captain);
 
 /**
  * getTeam - gets data from team document with required id parameter
@@ -51,7 +51,7 @@ const putTeam = (req: functions.Request, res: functions.Response) => {
   }
   if (!req.body.id) {
     return res.status(400).json({
-      message: 'Team id not found. Make sure to clarify captain as the team id in request body.',
+      message: 'Team id not found in request body. Make sure to clarify captain as the team id in request body.',
     });
   }
   const id = req.body.id; // id of the user that is the captain is the id of the team in the collection
@@ -94,7 +94,7 @@ const postTeam = (req: functions.Request, res: functions.Response) => {
   db.doc(id).set(req.body, { merge: true, })
   .then(ref => {
     res.status(200).json({
-      message: 'Put is successful.'
+      message: 'Post is successful.'
     })
   })
   .catch(err => {
