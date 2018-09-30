@@ -9,8 +9,14 @@ const db = firebase.firestore().collection('shifts');
 Helper Functions
  */
 
+/**
+ * checkNewShiftData - check if new request data has all of the needed elements before posting
+ */
 const checkNewShiftData = (data) => (data.captain && data.startTime && data.endTime && data.users);
 
+/**
+ * getTeamShifts - GET shifts of an entire team with id parameter
+ */
 const getTeamShifts = (req: functions.Request, res: functions.Response) => {
   const params = parse(req.url.split('?')[1])
   if (params.id) {
@@ -42,6 +48,9 @@ const getTeamShifts = (req: functions.Request, res: functions.Response) => {
   return res;
 };
 
+/**
+ * getUniqueShift - GET an individual shift with id parameter
+ */
 const getUniqueShift = (req: functions.Request, res: functions.Response) => {
   const params = parse(req.url.split('?')[1]);
   if (params.id) {
@@ -79,6 +88,9 @@ const getUniqueShift = (req: functions.Request, res: functions.Response) => {
   return res;
 }
 
+/**
+ * putShift - PUT data into existing shifts
+ */
 const putShift = (req: functions.Request, res: functions.Response) => {
   if (!req.body) {
     return res.status(400).json({
@@ -107,6 +119,9 @@ const putShift = (req: functions.Request, res: functions.Response) => {
   return res;
 }
 
+/**
+ * postShift - POST new shift to shift collection
+ */
 const postShift = (req: functions.Request, res: functions.Response) => {
   if (!req.body) {
     return res.status(400).json({
@@ -139,21 +154,28 @@ const postShift = (req: functions.Request, res: functions.Response) => {
   return res;
 }
 
-const shifts = functions.https.onRequest((req, res) => {
-  switch (req.method) {
-    case 'GET': {
-      return getTeamShifts(req, res);
-    }
-    default: {
-      return res.status(400).json({
-        message: 'HTTPS method not recognized and/or supported.',
-      })
-    }
-  }
-});
-
 /*
 Cloud Functions
+ */
+
+ /**
+  * shifts - cloud functions for dealing with multiple shift documents
+  */
+ const shifts = functions.https.onRequest((req, res) => {
+   switch (req.method) {
+     case 'GET': {
+       return getTeamShifts(req, res);
+     }
+     default: {
+       return res.status(400).json({
+         message: 'HTTPS method not recognized and/or supported.',
+       })
+     }
+   }
+ });
+
+/**
+ * shift - cloud functions for dealing with individual shift documents
  */
 const shift = functions.https.onRequest((req: functions.Request, res: functions.Response) => {
   switch (req.method) {
