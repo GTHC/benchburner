@@ -8,16 +8,16 @@ const db = firebase.firestore().collection('teams')
 /**
  * checkNewTeamData - helper function for postTeam to check if new team data is valid
  */
-const checkNewTeamData = (data) => (data.id && data.name && data.type && data.number && data.captain);
+const checkNewTeamData = (data) => (data.name && data.type && data.number && data.captain);
 
 /**
- * getTeam - gets data from team document with required id parameter
+ * getTeam - gets data from team document with required captain parameter
  */
 const getTeam = (req: functions.Request, res: functions.Response) => {
   const params = parse(req.url.split('?')[1])
-  if (params.id) {
-    const id = params.id;
-    db.where('captain', '==', id).get()
+  if (params.captain) {
+    const captain = params.captain;
+    db.where('captain', '==', captain).get()
     .then(snapshot => {
       const data = snapshot.docs[0].data();
       return res.status(200).json({
@@ -34,7 +34,7 @@ const getTeam = (req: functions.Request, res: functions.Response) => {
     })
   } else {
     return res.status(400).json({
-      message: 'Please add valid id value to parameter.'
+      message: 'Please add valid captain value to parameter.'
     })
   }
   return res;
@@ -49,12 +49,12 @@ const putTeam = (req: functions.Request, res: functions.Response) => {
       message: 'Please make request with team data. No data found in request body.'
     });
   }
-  if (!req.body.id) {
+  if (!req.body.captain) {
     return res.status(400).json({
-      message: 'Team id not found in request body. Make sure to clarify captain as the team id in request body.',
+      message: 'Team id not found in request body. Make sure to clarify id in request body.',
     });
   }
-  const id = req.body.id; // id of the user that is the captain is the id of the team in the collection
+  const id = req.body.id;
   db.doc(id).set(req.body, { merge: true, })
   .then(ref => {
     res.status(200).json({
@@ -80,18 +80,12 @@ const postTeam = (req: functions.Request, res: functions.Response) => {
       message: 'Please make request with team data. No data found in request body.'
     });
   }
-  if (!req.body.id) {
-    return res.status(400).json({
-      message: 'Team id not found. Make sure to clarify captain as the team id in request body.',
-    });
-  }
   if(!checkNewTeamData(req.body)) {
     return res.status(400).json({
-      message: 'Make sure request body includes a id, name, type (tent type), and number (tent number) elements.',
+      message: 'Make sure request body includes a captain, name, type (tent type), and number (tent number) elements.',
     });
   }
-  const id = req.body.id;
-  db.doc(id).set(req.body, { merge: true, })
+  db.add(req.body)
   .then(ref => {
     res.status(200).json({
       message: 'Post is successful.'
