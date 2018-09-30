@@ -12,3 +12,5 @@ export { default as testFunction } from './testFunction';
 export { newUserSignIn, user } from './user';
 
 export { team } from './team';
+
+export { shifts, shift } from './shifts';
