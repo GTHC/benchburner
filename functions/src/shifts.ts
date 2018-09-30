@@ -17,13 +17,18 @@ const getTeamShifts = (req: functions.Request, res: functions.Response) => {
     const id = params.id;
     db.where('captain', '==', id).get()
     .then(snapshot => {
-      const data = [];
+      const allData = [];
       snapshot.docs.forEach(doc => {
-        data.push(doc.data());
+        const docData = doc.data()
+        const data = {
+          id: doc.id,
+          ...docData
+        };
+        allData.push(data);
       })
       return res.status(200).json({
-          message: data.length !== 0 ? 'Data successfully grabbed.' : 'No shift data under this id.',
-          data,
+          message: allData.length !== 0 ? 'Data successfully grabbed.' : 'No shift data under this id.',
+          allData,
       })
     })
     .catch(err => {
@@ -44,7 +49,11 @@ const getUniqueShift = (req: functions.Request, res: functions.Response) => {
     db.doc(id).get()
     .then(doc => {
       if (doc.exists) {
-        const data = doc.data();
+        const docData = doc.data()
+        const data = {
+          id: doc.id,
+          ...docData
+        };
         return res.status(200).json({
             message: 'Data successfully grabbed.',
             data,
