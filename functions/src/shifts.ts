@@ -19,9 +19,9 @@ const checkNewShiftData = (data) => (data.captain && data.startTime && data.endT
  */
 const getTeamShifts = (req: functions.Request, res: functions.Response) => {
   const params = parse(req.url.split('?')[1])
-  if (params.id) {
-    const id = params.id;
-    db.where('captain', '==', id).get()
+  if (params.captain) {
+    const captain = params.captain;
+    db.where('captain', '==', captain).get()
     .then(snapshot => {
       const allData = [];
       snapshot.docs.forEach(doc => {
@@ -42,7 +42,7 @@ const getTeamShifts = (req: functions.Request, res: functions.Response) => {
     })
   } else {
     return res.status(400).json({
-      message: 'Please add valid id value to parameter.'
+      message: 'Please add valid captain value to parameter.'
     })
   }
   return res;
