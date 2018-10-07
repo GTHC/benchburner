@@ -96,7 +96,7 @@ Cloud Functions
  const newUserSignIn = functions.auth.user().onCreate(userSnapshot => {
    const data = {
      email: userSnapshot.data.email,
-     name: userSnapshot.data.displayName,
+     displayName: userSnapshot.data.displayName,
      photoURL: userSnapshot.data.photoURL,
      createdAt: userSnapshot.timestamp,
      lastSignIn: userSnapshot.timestamp,
