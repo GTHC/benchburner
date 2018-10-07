@@ -6,6 +6,18 @@ import { firebase } from './../config';
 const db = firebase.firestore().collection('users')
 
 /*
+Internal functions
+ */
+ const _getUserData = id => {
+   return db.doc(id).get()
+   .then(doc => {
+     console.log('data here', doc.data())
+     return doc.data();
+   })
+   .catch(err => err)
+ }
+
+/*
 Helper functions - tslint requires helper functions to be declared before higher-level functions
  */
 
@@ -57,9 +69,15 @@ const putUser = (req: functions.Request, res: functions.Response) => {
   const id = req.body.id;
   db.doc(id).set(req.body, { merge: true, })
   .then(ref => {
-    res.status(200).json({
-      message: 'Put is successful.'
+    // getting user data after put changes to output it in response, so, front end won't have to call get twice
+    _getUserData(id).then(data => {
+      console.log('data', data)
+      res.status(200).json({
+        message: 'Put is successful.',
+        data,
+      })
     })
+    .catch(err => err);
   })
   .catch(err => {
     console.error(err)
@@ -79,10 +97,9 @@ Cloud Functions
    const data = {
      email: userSnapshot.data.email,
      name: userSnapshot.data.displayName,
-     photo: userSnapshot.data.photoURL,
+     photoURL: userSnapshot.data.photoURL,
      createdAt: userSnapshot.timestamp,
      lastSignIn: userSnapshot.timestamp,
-     isFirstSignIn: true,
    };
    return db.doc(data.email).set(data)
    .then(ref => {
