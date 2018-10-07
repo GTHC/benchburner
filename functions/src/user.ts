@@ -82,6 +82,7 @@ Cloud Functions
      photo: userSnapshot.data.photoURL,
      createdAt: userSnapshot.timestamp,
      lastSignIn: userSnapshot.timestamp,
+     isFirstSignIn: true,
    };
    return db.doc(data.email).set(data)
    .then(ref => {
