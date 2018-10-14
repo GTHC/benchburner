@@ -1,6 +1,12 @@
 # benchburner 🔥🔥🔥
 GTHC's (Game Tenting Help Center) API which creates endpoints with Google Cloud's Cloud Functions for Firebase 🔥.
 
+## Contents
+1. [/user](https://github.com/GTHC/benchburner/blob/master/README.md#user)
+2. [/team](https://github.com/GTHC/benchburner/blob/master/README.md#team)
+3. [/shifts](https://github.com/GTHC/benchburner/blob/master/README.md#shifts)
+4. [/shift](https://github.com/GTHC/benchburner/blob/master/README.md#shift)
+
 ## API Endpoints
 
 ### `/user`
