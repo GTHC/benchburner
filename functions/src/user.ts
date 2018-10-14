@@ -11,7 +11,6 @@ Internal functions
  const _getUserData = id => {
    return db.doc(id).get()
    .then(doc => {
-     console.log('data here', doc.data())
      return doc.data();
    })
    .catch(err => err)
@@ -71,7 +70,6 @@ const putUser = (req: functions.Request, res: functions.Response) => {
   .then(ref => {
     // getting user data after put changes to output it in response, so, front end won't have to call get twice
     _getUserData(id).then(data => {
-      console.log('data', data)
       res.status(200).json({
         message: 'Put is successful.',
         data,

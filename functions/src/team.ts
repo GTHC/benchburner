@@ -5,6 +5,14 @@ import { firebase } from './../config';
 
 const db = firebase.firestore().collection('teams')
 
+const _getTeamData = captain => {
+  return db.doc(captain).get()
+  .then(doc => {
+    return doc.data();
+  })
+  .catch(err => err)
+}
+
 /**
  * checkNewTeamData - helper function for postTeam to check if new team data is valid
  */
@@ -57,9 +65,13 @@ const putTeam = (req: functions.Request, res: functions.Response) => {
   const captain = req.body.captain;
   db.doc(captain).set(req.body, { merge: true, })
   .then(ref => {
-    res.status(200).json({
-      message: 'Put is successful.'
+    _getTeamData(captain).then(data => {
+      res.status(200).json({
+        message: 'Put is successful.',
+        data,
+      })
     })
+    .catch(err => err);
   })
   .catch(err => {
     console.error(err)
@@ -85,11 +97,16 @@ const postTeam = (req: functions.Request, res: functions.Response) => {
       message: 'Make sure request body includes a captain, name, type (tent type), and number (tent number) elements.',
     });
   }
-  db.add(req.body)
+  const captain = req.body.captain;
+  db.doc(captain).set(req.body)
   .then(ref => {
-    res.status(200).json({
-      message: 'Post is successful.'
+    _getTeamData(req.body.captain).then(data => {
+      res.status(200).json({
+        message: 'Put is successful.',
+        data,
+      })
     })
+    .catch(err => err);
   })
   .catch(err => {
     console.error(err)
