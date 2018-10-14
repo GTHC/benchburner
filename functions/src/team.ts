@@ -54,8 +54,8 @@ const putTeam = (req: functions.Request, res: functions.Response) => {
       message: 'Team id not found in request body. Make sure to clarify id in request body.',
     });
   }
-  const id = req.body.id;
-  db.doc(id).set(req.body, { merge: true, })
+  const captain = req.body.captain;
+  db.doc(captain).set(req.body, { merge: true, })
   .then(ref => {
     res.status(200).json({
       message: 'Put is successful.'
