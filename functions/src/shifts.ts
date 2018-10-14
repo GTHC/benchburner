@@ -15,7 +15,7 @@ Helper Functions
 const checkNewShiftData = (data) => (data.captain && data.startTime && data.endTime && data.users);
 
 /**
- * getTeamShifts - GET shifts of an entire team with id parameter
+ * getTeamShifts - GET shifts of an entire team with a captain parameter
  */
 const getTeamShifts = (req: functions.Request, res: functions.Response) => {
   const params = parse(req.url.split('?')[1])
@@ -34,7 +34,7 @@ const getTeamShifts = (req: functions.Request, res: functions.Response) => {
       })
       return res.status(200).json({
           message: allData.length !== 0 ? 'Data successfully grabbed.' : 'No shift data under this id.',
-          allData,
+          data: allData,
       })
     })
     .catch(err => {
